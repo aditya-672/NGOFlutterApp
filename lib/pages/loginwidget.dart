@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../colors.dart';
+import '../pages/userdashboard.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -28,7 +28,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         // ignore: use_build_context_synchronously
-        // Navigator.of(context).pushReplacementNamed(UserDashboard.routeName);
+        Navigator.of(context).pushReplacementNamed(UserDashboard.routeName);
         setState(() {
           isloading = false;
         });
@@ -64,11 +64,11 @@ class _LoginWidgetState extends State<LoginWidget> {
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
-                color: white,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: grey.withOpacity(0.03),
+                    color: Colors.grey.withOpacity(0.03),
                     spreadRadius: 10,
                     blurRadius: 3,
                     // changes position of shadow
@@ -106,11 +106,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                       },
                       key: const ValueKey('a'),
                       textInputAction: TextInputAction.next,
-                      cursorColor: black,
+                      cursorColor: Colors.black,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        color: black,
+                        color: Colors.black,
                       ),
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
@@ -133,11 +133,11 @@ class _LoginWidgetState extends State<LoginWidget> {
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
-                color: white,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: grey.withOpacity(0.03),
+                    color: Colors.grey.withOpacity(0.03),
                     spreadRadius: 10,
                     blurRadius: 3,
                     // changes position of shadow
@@ -179,11 +179,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                       key: const ValueKey('b'),
                       textInputAction: TextInputAction.done,
                       obscureText: _obscureText,
-                      cursorColor: black,
+                      cursorColor: Colors.black,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: black,
+                        color: Colors.black,
                       ),
                       decoration: InputDecoration(
                         prefixIcon: const Icon(
@@ -216,7 +216,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
-                  color: buttoncolor,
+                  color: Colors.purple.shade500,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Center(

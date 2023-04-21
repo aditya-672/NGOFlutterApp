@@ -1,43 +1,46 @@
+import 'package:eventmanagementapp/pages/userdashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../colors.dart';
 
-class AdminLogin extends StatefulWidget {
-  const AdminLogin({super.key});
+class SignUpWidget extends StatefulWidget {
+  const SignUpWidget({super.key});
+  static const routeName = 'signup';
 
   @override
-  State<AdminLogin> createState() => _AdminLoginState();
+  State<SignUpWidget> createState() => _SignUpWidgetState();
 }
 
-class _AdminLoginState extends State<AdminLogin> {
+class _SignUpWidgetState extends State<SignUpWidget> {
   final _formKey = GlobalKey<FormState>();
-  bool isloading = false;
+  //CollectionReference users = FirebaseFirestore.instance.collection('users');
   bool _obscureText = true;
+  bool isloading = false;
   var email = '';
   var password = '';
+  var name = '';
+  var rollnp = '';
 
   void login() async {
     final isvalid = _formKey.currentState!.validate();
 
     if (isvalid) {
-      _formKey.currentState?.save();
-      setState(() {
-        isloading = true;
-      });
       try {
+        _formKey.currentState?.save();
+        FocusScope.of(context).unfocus();
+        setState(() {
+          isloading = true;
+        });
         await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+            .createUserWithEmailAndPassword(email: email, password: password);
+        setState(() {
+          isloading = true;
+        });
         // ignore: use_build_context_synchronously
-        // Navigator.of(context).pushReplacementNamed(UserDashboard.routeName);
-        setState(() {
-          isloading = false;
-        });
-      } on FirebaseAuthException catch (error) {
-        setState(() {
-          isloading = false;
-        });
+        Navigator.of(context).pushReplacementNamed(UserDashboard.routeName);
+      } on PlatformException catch (error) {
         var msg = 'An error occured';
-        print('hi $error');
         if (error.message != null) {
           msg = error.message!;
         }
@@ -47,7 +50,7 @@ class _AdminLoginState extends State<AdminLogin> {
           ),
         );
       } catch (error) {
-        print('hi $error');
+        print(error);
       }
     }
   }
@@ -61,6 +64,75 @@ class _AdminLoginState extends State<AdminLogin> {
           children: [
             const SizedBox(
               height: 30,
+            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: grey.withOpacity(0.03),
+                    spreadRadius: 10,
+                    blurRadius: 3,
+                    // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 15,
+                  bottom: 5,
+                  right: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text(
+                        "Name",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Color(0xff67727d),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please fill this';
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) => name = newValue!,
+                      key: const ValueKey('a'),
+                      textInputAction: TextInputAction.next,
+                      cursorColor: black,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: black,
+                      ),
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.person_2_outlined,
+                        ),
+                        suffixIconColor: Colors.black,
+                        hintText: "Enter name here",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 14.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Container(
               width: double.infinity,
@@ -159,6 +231,76 @@ class _AdminLoginState extends State<AdminLogin> {
                     const Padding(
                       padding: EdgeInsets.only(left: 12),
                       child: Text(
+                        "Phone Number",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Color(0xff67727d),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      onSaved: (newValue) => rollnp = newValue!,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please fill this';
+                        }
+                        return null;
+                      },
+                      key: const ValueKey('a'),
+                      textInputAction: TextInputAction.next,
+                      cursorColor: black,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: black,
+                      ),
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.format_list_numbered_sharp,
+                        ),
+                        suffixIconColor: Colors.black,
+                        hintText: "Enter phone no here",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 14.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.03),
+                    spreadRadius: 10,
+                    blurRadius: 3,
+                    // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 15,
+                  bottom: 5,
+                  right: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text(
                         "Password",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -181,11 +323,11 @@ class _AdminLoginState extends State<AdminLogin> {
                       key: const ValueKey('b'),
                       textInputAction: TextInputAction.done,
                       obscureText: _obscureText,
-                      cursorColor: black,
+                      cursorColor: Colors.black,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: black,
+                        color: Colors.black,
                       ),
                       decoration: InputDecoration(
                         prefixIcon: const Icon(
@@ -218,22 +360,18 @@ class _AdminLoginState extends State<AdminLogin> {
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
-                  color: buttoncolor,
+                  color: btncolor,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: Center(
-                  child: isloading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                child: const Center(
+                  child: Text(
+                    "Signup",
+                    style: TextStyle(
+                      color: white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ),

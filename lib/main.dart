@@ -1,12 +1,14 @@
-import 'package:eventmanagementapp/adminwidget/feeedbackform.dart';
-
-import '../pages/admindashboard.dart';
-import '../pages/login.dart';
-import '../pages/userdashboard.dart';
-import '../widgets/signupwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:eventmanagementapp/pages/blog.dart';
+import 'package:eventmanagementapp/pages/dogs.dart';
+import 'package:eventmanagementapp/pages/donationpage.dart';
+import 'package:eventmanagementapp/pages/education.dart';
+import 'package:eventmanagementapp/pages/loginpage.dart';
+import 'package:eventmanagementapp/pages/userdashboard.dart';
+import 'package:eventmanagementapp/pages/volunteerform.dart';
+import 'package:eventmanagementapp/pages/volunteerpages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,14 +16,9 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,28 +34,27 @@ class _MyAppState extends State<MyApp> {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.purple,
+      
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data?.displayName == 'user') {
-              return const UserDashboard();
-            }
-            if (snapshot.data?.displayName == 'admin') {
-              return const AdminDashboard();
-            }
-            return const LoginPage();
+            return const UserDashboard();
           }
           return const LoginPage();
         },
       ),
       routes: {
-        LoginPage.routeName: (_) => const LoginPage(),
-        SignUpWidget.routeName: (_) => const SignUpWidget(),
         UserDashboard.routeName: (_) => const UserDashboard(),
-        FeedbackForm.routeName: (_) => const FeedbackForm(),
+        LoginPage.routeName:(_) => const LoginPage(),
+        DonationPage.routeName: (_) => const DonationPage(),
+        Educationpage.routeName: (_) => const Educationpage(),
+        DogsPage.routeName: (_) => const DogsPage(),
+        VolunteerForm.routeName:(_) => const VolunteerForm(),
+        VolunteerPage.routeName:(context) => const VolunteerPage(),
+        Blog.routeName: (_) => const Blog(),
       },
     );
   }
